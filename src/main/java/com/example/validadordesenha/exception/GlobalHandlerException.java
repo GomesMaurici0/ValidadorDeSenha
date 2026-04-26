@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class TratadorExcecao {
+public class GlobalHandlerException {
 
     @ExceptionHandler(ValidacaoException.class)
     public ResponseEntity<SenhaOutput> tratarValidacaoException(ValidacaoException ex) {

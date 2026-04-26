@@ -3,7 +3,7 @@ package com.example.validadordesenha.service;
 import com.example.validadordesenha.dto.SenhaInput;
 import com.example.validadordesenha.dto.SenhaOutput;
 
-public interface ValidadorSenha {
+public interface ValidadorSenhaService {
 
-    SenhaOutput validar(SenhaInput input);
+    SenhaOutput validarSenha(SenhaInput input);
 }

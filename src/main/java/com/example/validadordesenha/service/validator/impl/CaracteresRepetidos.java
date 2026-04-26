@@ -1,11 +1,15 @@
-package com.example.validadordesenha.service.validator;
+package com.example.validadordesenha.service.validator.impl;
 
 import com.example.validadordesenha.exception.CodigoErro;
 import com.example.validadordesenha.exception.ValidacaoException;
+import com.example.validadordesenha.service.validator.RegraDaSenha;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Component
-public class CaracteresRepetidos implements ValidadorDeRegras {
+public class CaracteresRepetidos implements RegraDaSenha {
 
     @Override
     public void validar(String senha) throws ValidacaoException {
@@ -15,13 +19,13 @@ public class CaracteresRepetidos implements ValidadorDeRegras {
     }
 
     private boolean possuiCaracteresRepetidos(String senha) {
-        for (int i = 0; i < senha.length(); i++) {
-            for (int j = i + 1; j < senha.length(); j++) {
-                if (senha.charAt(i) == senha.charAt(j)) {
-                    return true;
-                }
+        Set<Character> caracteres = new HashSet<>();
+        for (char c : senha.toCharArray()) {
+            if (!caracteres.add(c)) {
+                return true;
             }
         }
         return false;
     }
+
 }

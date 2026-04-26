@@ -2,7 +2,7 @@ package com.example.validadordesenha.controller;
 
 import com.example.validadordesenha.dto.SenhaInput;
 import com.example.validadordesenha.dto.SenhaOutput;
-import com.example.validadordesenha.service.ValidadorSenha;
+import com.example.validadordesenha.service.ValidadorSenhaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class VerificadorController {
 
-    private final ValidadorSenha validadorSenha;
+    private final ValidadorSenhaService validadorSenhaService;
 
     @PostMapping("/validar")
-    public ResponseEntity<SenhaOutput> validar(@Valid @RequestBody SenhaInput input) {
-        SenhaOutput saida = validadorSenha.validar(input);
-        return ResponseEntity.ok(saida);
+    public ResponseEntity<SenhaOutput> validar(@Valid @RequestBody SenhaInput request) {
+        SenhaOutput response = validadorSenhaService.validarSenha(request);
+        return ResponseEntity.ok(response);
     }
 }

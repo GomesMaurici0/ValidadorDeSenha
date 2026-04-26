@@ -1,5 +1,10 @@
 package com.example.validadordesenha.exception;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public enum CodigoErro {
 
     CARACTER_INSUFICIENTE("A senha deve ter pelo menos 9 caracteres."),
@@ -10,12 +15,4 @@ public enum CodigoErro {
     CARACTERES_REPETIDOS("A senha não pode conter caracteres repetidos.");
 
     private final String mensagem;
-
-    CodigoErro(String mensagem) {
-        this.mensagem = mensagem;
-    }
-
-    public String getMensagem() {
-        return mensagem;
-    }
 }

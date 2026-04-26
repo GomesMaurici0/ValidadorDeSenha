@@ -12,70 +12,36 @@ Uma API REST robusta e extensível para validação de senhas, desenvolvida com 
   - [Endpoints](#endpoints)
   - [Exemplos de Requisição](#exemplos-de-requisição)
   - [Exemplos de Resposta](#exemplos-de-resposta)
-  - [Códigos de Status HTTP](#códigos-de-status-http)
 - [Estrutura do Projeto](#estrutura-do-projeto)
 - [Padrões e Princípios Aplicados](#padrões-e-princípios-aplicados)
-- [Tratamento de Erros](#tratamento-de-erros)
 - [Testes](#testes)
 - [Tecnologias](#tecnologias)
 
 ## ✨ Características
 
-✅ **Validação Robusta** - Múltiplas regras de validação de senha  
-✅ **Exceções Personalizadas** - Cada tipo de erro tem sua própria exceção  
-✅ **API RESTful** - Endpoint claro e bem documentado  
-✅ **Tratamento Centralizado** - GlobalExceptionHandler para respostas consistentes  
-✅ **Mensagens Personalizadas** - Feedback específico para cada validação falhada  
-✅ **Arquitetura Extensível** - Fácil adicionar novas regras de validação  
-✅ **SOLID Principles** - Código bem estruturado e desacoplado  
-✅ **Clean Code** - Nomenclatura clara, responsabilidade única  
-✅ **Testes Abrangentes** - Cobertura completa com testes parametrizados  
+✅ **Validação Robusta** - Múltiplas regras de validação de senha
+✅ **API RESTful** - Endpoint claro e bem documentado
+✅ **Mensagens Personalizadas** - Feedback específico para cada regra violada
+✅ **Arquitetura Extensível** - Fácil adicionar novas regras de validação
+✅ **SOLID Principles** - Código bem estruturado e desacoplado
+✅ **Clean Code** - Nomenclatura clara, responsabilidade única
+✅ **Testes Abrangentes** - Cobertura completa com testes parametrizados
 ✅ **Java 17+** - Utiliza features modernas como records
 
 ## 🔑 Requisitos de Senha
 
 Uma senha válida deve atender a **TODOS** os seguintes critérios:
 
-| Critério | Descrição | Exemplo | Exceção Lançada |
-|----------|-----------|---------|-----------------|
-| ✓ Comprimento | Mínimo de **8 caracteres** | `Senha@123` | `ComprimentoInsuficienteException` |
-| ✓ Letra Maiúscula | Pelo menos 1 letra maiúscula (A-Z) | `S`enha@123 | `LetraMaiusculaAusenteException` |
-| ✓ Letra Minúscula | Pelo menos 1 letra minúscula (a-z) | `S`enha@123 | `LetraMinusculaAusenteException` |
-| ✓ Dígito | Pelo menos 1 número (0-9) | Senha@`123` | `DigitoAusenteException` |
-| ✓ Caractere Especial | Pelo menos 1 caractere de `!@#$%^&*()-+` | Senha`@`123 | `CaractereEspecialAusenteException` |
-| ✓ Sem Repetição | Nenhum caractere pode repetir em qualquer posição | ✓ Senha@123 ✗ Senha@112 | `CaracteresRepetidosException` |
+| Critério | Descrição | Exemplo |
+|----------|-----------|---------|
+| ✓ Comprimento | Mínimo de **8 caracteres** | `Senha@123` |
+| ✓ Letra Maiúscula | Pelo menos 1 letra maiúscula (A-Z) | `S`enha@123 |
+| ✓ Letra Minúscula | Pelo menos 1 letra minúscula (a-z) | `S`enha@123 |
+| ✓ Dígito | Pelo menos 1 número (0-9) | Senha@`123` |
+| ✓ Caractere Especial | Pelo menos 1 caractere de `!@#$%^&*()-+` | Senha`@`123 |
+| ✓ Sem Repetição | Nenhum caractere pode repetir em qualquer posição | ✓ Senha@123 ✗ Senha@112 |
 
 ## 🏗️ Arquitetura
-
-### Fluxo de Requisição com Exceções
-
-```
-┌─────────────────────────────────┐
-│   VerificadorController         │
-│   POST /v1/verificador-de-senha │
-└────────────┬────────────────────┘
-             │ SenhaInput
-             ▼
-┌─────────────────────────────────┐
-│   VerificadorServiceImpl         │
-│   - Injeta List<ValidadorRegra> │
-└────────────┬────────────────────┘
-             │
-    ┌─────────────────────────────┐
-    │ Para cada ValidadorRegra:   │
-    │ validador.valida(senha)     │
-    └─────────────────────────────┘
-             │
-      ┌──────┴──────────────────────────┐
-      │                                  │
-      ▼ Válido                           ▼ Inválido
-   Continue              Lança SenhaInvalidaException
-      │                                  │
-      ▼                                  ▼
-   return SenhaOutPut      GlobalExceptionHandler
-   (true, "Válido")       Transforma em ResponseEntity
-                          (400, SenhaOutPut(false, msg))
-```
 
 ### Estrutura do Projeto
 
@@ -88,16 +54,6 @@ src/main/java/com/example/validadordesenha/
 │   │   └── SenhaInput.java                 # DTO de entrada
 │   └── output/
 │       └── SenhaOutPut.java                # DTO de resposta
-├── exception/
-│   ├── SenhaInvalidaException.java         # Exceção base
-│   ├── ComprimentoInsuficienteException.java
-│   ├── LetraMaiusculaAusenteException.java
-│   ├── LetraMinusculaAusenteException.java
-│   ├── DigitoAusenteException.java
-│   ├── CaractereEspecialAusenteException.java
-│   ├── CaracteresRepetidosException.java
-│   └── handler/
-│       └── GlobalExceptionHandler.java     # Tratador centralizado
 ├── service/
 │   ├── VerificadorService.java             # Interface do serviço
 │   ├── impl/
@@ -112,6 +68,31 @@ src/main/java/com/example/validadordesenha/
 │           ├── ValidadorCaractereEspecial.java
 │           └── ValidadorCaracteresRepetidos.java
 └── ValidadorDeSenhaApplication.java        # Classe principal
+```
+
+### Padrão de Design
+
+A aplicação utiliza o padrão **Strategy** para validação:
+
+```
+┌─────────────────────────┐
+│ VerificadorController   │
+└────────────┬────────────┘
+             │
+             ▼
+┌─────────────────────────────┐
+│ VerificadorService (I)      │
+└────────────┬────────────────┘
+             │
+             ▼
+┌─────────────────────────────────┐
+│ VerificadorServiceImpl           │
+│  - Injeta List<ValidadorRegra>  │
+└────────────┬───��────────────────┘
+             │
+      ┌──────┴──────┬──────────┬────────���────┬──────────┐
+      ▼             ▼          ▼              ▼          ▼
+  Comprimento  Maiúscula  Minúscula  Especial  Repetição
 ```
 
 ## 📦 Instalação
@@ -215,13 +196,6 @@ curl -X POST http://localhost:8080/v1/verificador-de-senha/valida \
 }
 ```
 
-### Códigos de Status HTTP
-
-| Código | Descrição |
-|--------|-----------|
-| 200    | OK - Senha válida |
-| 400    | Bad Request - Senha inválida (detalhes na resposta) |
-
 ## 📊 Estrutura do Projeto
 
 ### Camadas da Aplicação
@@ -243,10 +217,6 @@ curl -X POST http://localhost:8080/v1/verificador-de-senha/valida \
 #### 4. **Validator** (Estratégia de Validação)
 - Interface `ValidadorRegra` - Contrato para validadores
 - Implementações específicas - Cada uma valida uma regra
-
-#### 5. **Exception** (Tratamento de Erros)
-- Exceções específicas para cada tipo de erro de validação
-- `GlobalExceptionHandler` para tratamento centralizado
 
 ## 🎯 Padrões e Princípios Aplicados
 
@@ -326,12 +296,12 @@ mvn test
 
 A suite de testes inclui:
 
-✅ **Testes de Contexto** - Aplicação carrega corretamente  
-✅ **Testes de Validação Positiva** - Senhas válidas aceitam  
-✅ **Testes Parametrizados** - Múltiplos cenários por regra  
-✅ **Testes de Comprimento** - Senhas curtas rejeitadas  
-✅ **Testes de Composição** - Falta de maiúscula, minúscula, etc.  
-✅ **Testes de Repetição** - Caracteres duplicados rejeitados  
+✅ **Testes de Contexto** - Aplicação carrega corretamente
+✅ **Testes de Validação Positiva** - Senhas válidas aceitam
+✅ **Testes Parametrizados** - Múltiplos cenários por regra
+✅ **Testes de Comprimento** - Senhas curtas rejeitadas
+✅ **Testes de Composição** - Falta de maiúscula, minúscula, etc.
+✅ **Testes de Repetição** - Caracteres duplicados rejeitados
 ✅ **Testes de Múltiplos Erros** - Mensagens concatenadas
 
 ### Exemplo de Teste Parametrizado
@@ -427,3 +397,4 @@ Para dúvidas ou sugestões, abra uma issue ou pull request.
 ---
 
 **Desenvolvido com ❤️ seguindo as melhores práticas de engenharia de software.**
+
