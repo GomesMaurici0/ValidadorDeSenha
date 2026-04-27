@@ -6,14 +6,17 @@ import com.example.validadordesenha.service.validator.RegraDaSenha;
 import org.springframework.stereotype.Component;
 
 @Component
-public class QuantidadeCaracter implements RegraDaSenha {
-
-    private static final int QUANTIDADE_MINIMA = 9;
+public class AusenciaDeEspaco implements RegraDaSenha {
 
     @Override
     public void validar(String senha) throws ValidacaoException {
-        if (senha.length() < QUANTIDADE_MINIMA) {
-            throw new ValidacaoException(CodigoErro.TAMANHO_INSUFICIENTE);
+        validarSemEspaco(senha);
+    }
+
+    private void validarSemEspaco(String senha) throws ValidacaoException {
+        if (senha.contains(" ")) {
+            throw new ValidacaoException(CodigoErro.EXISTENCIA_DE_ESPACO);
         }
     }
 }
+

@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class LetraMaiuscula implements RegraDaSenha {
 
-    private static final String REGEX_LETRA_MAIUSCULA = ".*[A-Z].*";
+    private static final String LETRA_MAIUSCULA = ".*[A-Z].*";
 
     @Override
     public void validar(String senha) throws ValidacaoException {
-        if (!senha.matches(REGEX_LETRA_MAIUSCULA)) {
+        if (!senha.matches(LETRA_MAIUSCULA)) {
             throw new ValidacaoException(CodigoErro.LETRA_MAIUSCULA_AUSENTE);
         }
     }

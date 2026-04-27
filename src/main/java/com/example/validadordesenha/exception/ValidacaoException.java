@@ -8,4 +8,8 @@ public class ValidacaoException extends RuntimeException {
         super(codigoErro.getMensagem());
         this.codigoErro = codigoErro;
     }
+
+    public CodigoErro getCodigoErro() {
+        return codigoErro;
+    }
 }
