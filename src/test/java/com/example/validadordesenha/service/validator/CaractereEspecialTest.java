@@ -1,7 +1,7 @@
-package com.example.validadordesenha.service.validator.impl;
-
+package com.example.validadordesenha.service.validator;
 import com.example.validadordesenha.exception.CodigoErro;
 import com.example.validadordesenha.exception.ValidacaoException;
+import com.example.validadordesenha.service.validator.impl.CaractereEspecial;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

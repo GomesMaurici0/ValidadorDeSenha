@@ -72,7 +72,7 @@ class VerificadorControllerTest {
 
         mockMvc.perform(post("/v1/verificador-senha/validar")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}")) // sem senha
+                        .content("{}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.valido").value(false))
                 .andExpect(jsonPath("$.mensagem")
