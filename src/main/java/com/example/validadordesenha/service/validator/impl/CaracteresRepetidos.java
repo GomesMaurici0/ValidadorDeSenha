@@ -21,7 +21,6 @@ public class CaracteresRepetidos implements RegraDaSenha {
     private boolean possuiCaracteresRepetidos(String senha) {
         Set<Character> caracteres = new HashSet<>();
         for (char c : senha.toCharArray()) {
-            if (c == ' ') continue;  // Ignora espaços
             if (!caracteres.add(c)) {
                 return true;
             }
