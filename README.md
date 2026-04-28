@@ -12,7 +12,7 @@ Validar se uma senha atende aos critérios de segurança estabelecidos e retorna
 
 ## 🚀 Tecnologias utilizadas
 
-- Java 21
+- Java 17
 - Spring Boot 3.x
 - Maven
 - JUnit 5
@@ -37,7 +37,7 @@ A senha deve:
 ### ▶️ Como executar o projeto
 #### Pré-requisitos
 
-* Java 21
+* Java 17
 * Maven instalado
 
 ### Passos
